@@ -25,6 +25,9 @@ public class Server {
             System.err.println("Unable to bind to port: " + PORT_NUM);
             System.exit(1);
         }
+        
+        System.out.println("Ready...");
+        
         Socket clientSocks = null;
         try{
             clientSocks = socks.accept();
@@ -45,6 +48,33 @@ public class Server {
         {
             System.err.println("Error getting to streams");
             System.exit(1);
+        }
+        
+        String data;
+        boolean isDone = false;
+        try{
+        while((data = in.readLine()) != null && !isDone)
+        {
+            System.out.println(data);
+            if(data.equalsIgnoreCase("aloha"))
+            {
+                out.print("Hello");
+                
+            }
+        }
+        }catch(IOException e)
+        {
+            System.err.println("Socket IO error");
+        }
+        finally
+        {
+            try {
+                in.close();
+                out.close();
+            } catch (IOException ex) {
+                System.err.println("Failed to Close streams"); 
+                System.exit(1);
+            }
         }
         
         
