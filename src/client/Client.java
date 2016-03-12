@@ -21,12 +21,18 @@ public class Client {
         this.port = parseInt;
         
         Socket socks = null;
-        DataOutputStream out = null;
+        PrintWriter out = null;
         BufferedReader in = null;
+        
+//        BufferedReader infromusr = null;
+        
         try{
             socks = new Socket(this.address,this.port);
-            out = new DataOutputStream(socks.getOutputStream());
+            out = new PrintWriter(socks.getOutputStream(),true);
             in = new BufferedReader(new InputStreamReader(socks.getInputStream()));
+            
+//            infromusr = new BufferedReader(new InputStreamReader(System.in));
+            
         }catch(IOException e)
         {
             System.err.println("Unable to connect server at " + this.address + ":" + this.port);
@@ -36,20 +42,23 @@ public class Client {
         System.out.println("Connected @ " + socks.getInetAddress() +":"+ socks.getPort() );
         
         try{
-            while(true)
-            {
-                System.out.println(in.readLine());
-            }
-            
-//            boolean isDone = false;
-//            String data = null;
-//            while(true && !isDone)
+//            while(true)
 //            {
-//                data = in.readLine();
-//                System.out.println(data);
-//                out.writeBytes("Aloha");
-//                isDone = true;
+////                out.writeBytes(infromusr.readLine());
+//                
+//                out.println("Aloha");
+//                System.out.println(in.readLine());
 //            }
+            
+            boolean isDone = false;
+            String data = null;
+            while(true && !isDone)
+            {
+                out.println("Aloha");
+                data = in.readLine();
+                System.out.println(data);
+                if(data.equalsIgnoreCase("hello"))isDone = true;
+            }
             
             
         }catch(Exception e)

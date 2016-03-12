@@ -39,10 +39,10 @@ public class Server {
         }
         
         System.out.println("Connection Established @" + clientSocks.getInetAddress() +":" + clientSocks.getPort());
-        DataOutputStream out = null;
+        PrintWriter out = null;
         BufferedReader in = null;
         try{
-        out = new DataOutputStream(clientSocks.getOutputStream());
+        out = new PrintWriter(clientSocks.getOutputStream(),true);
         in = new BufferedReader( new InputStreamReader(clientSocks.getInputStream()));
         
         }catch(IOException e)
@@ -54,20 +54,21 @@ public class Server {
         String data = null;
         boolean isDone = false;
         try{
-            while(true)
-            {
-                out.writeBytes("Hello");
-            }
-//        while(true && !isDone)
-//        {
-//            data = in.readLine();
-//            System.out.println(data);
-//            if(data.equalsIgnoreCase("aloha"))
+//            while(true)
 //            {
-//                out.writeBytes("Hello");
-//                
+//                System.out.println(in.readLine());
+//                out.println("Hello");
 //            }
-//        }
+        while(true && !isDone)
+        {
+            data = in.readLine();
+            System.out.println(data);
+            if(data.equalsIgnoreCase("aloha"))
+            {
+                out.println("Hello");
+                
+            }
+        }
         }catch(IOException e)
         {
             System.err.println("Socket IO error");

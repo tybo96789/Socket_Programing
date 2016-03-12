@@ -19,6 +19,10 @@ public class Runner {
                 System.err.println("Unable to get Localhost");
                 System.exit(1);
             }
+            finally
+            {
+                System.exit(0);
+            }
         }
         switch(args[0].trim().toLowerCase())
         {
