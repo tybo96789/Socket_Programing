@@ -2,10 +2,16 @@ package client;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -57,8 +63,22 @@ public class Client {
                 out.println("Aloha");
                 data = in.readLine();
                 System.out.println(data);
-                if(data.equalsIgnoreCase("hello"))isDone = true;
-                out.println("-1");
+                if(data.equalsIgnoreCase("hello")){
+                    System.out.println("Reading File");
+                    for (Integer fileData : readFile("TESTING.txt"))
+                        out.println(fileData);
+                    out.println(-1);
+                    while(true)
+                    {
+                        if(!(data = in.readLine()).equals("-1"))
+                        {
+                            System.out.println(data);
+                            break;
+                        }
+                    }
+                    out.println("-1");
+                    isDone = true;
+                }
             }
             
             
@@ -72,6 +92,33 @@ public class Client {
         }
         
         
+    }
+    
+    private static int[] readFile(String fileName)
+    {
+        ArrayList<Integer> data = new ArrayList<Integer>();
+        FileInputStream fileIn;
+        File file = null;
+        try {
+            file = new File(fileName);
+            fileIn = new FileInputStream(file);
+            int temp = 0;
+            data.add((int)file.length());
+            while((temp = fileIn.read()) != -1)
+            {
+                data.add(temp);
+            }
+        } catch (FileNotFoundException ex) {
+            System.err.println("File Not found!");
+            System.exit(0);
+        } catch (IOException ex) {
+            System.err.println("Error Reading File!");
+            System.exit(0);
+        }
+        int[] byteData = new int[data.size()];
+        for (int i = 0; i < data.size(); i++)
+            byteData[i] = data.get(i);
+        return byteData;
     }
     
     

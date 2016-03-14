@@ -2,12 +2,17 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Random;
 
 /**
  *
@@ -53,6 +58,7 @@ public class Server {
         
         String data = null;
         boolean isDone = false;
+        File file = null;
         try{
 //            while(true)
 //            {
@@ -66,6 +72,14 @@ public class Server {
             if(data.equalsIgnoreCase("aloha"))
             {
                 out.println("Hello");
+                int fileData = 0;
+                ArrayList<Integer> dataBytes = new ArrayList<Integer>();
+                while((fileData = Integer.parseInt(in.readLine()))!= -1)
+                {
+                    dataBytes.add(fileData);
+                }
+                System.out.println("Data recieved:" + dataBytes.get(0));
+                out.println("Your file named \""+writeFile(dataBytes)+"\" with the size "+ dataBytes.get(0)+" bytes has been uploaded correctly");
                 if((data = in.readLine()).equals("-1")) isDone = true;
             }
         }
@@ -85,6 +99,32 @@ public class Server {
             }
         }
         
+        
+    }
+    
+    private static File writeFile(ArrayList<Integer> data)
+    {
+        File file = new File("Server" + new Random().nextInt(10) + "" + new Random().nextInt(10) + "" + new Random().nextInt(10) + ".txt");
+        FileOutputStream fileOut = null;
+        try {
+             fileOut = new FileOutputStream(file);
+            for (int i = 1; i < data.size(); i++) {
+                fileOut.write(data.get(i));
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.err.println("File not found");
+        } catch (IOException ex) {
+            System.err.println("Error writing file!");
+        }
+        finally{
+            try {
+                fileOut.flush(); fileOut.close();
+            } catch (IOException ex) {
+                System.err.println("Error writing file!");
+            }
+        }
+        return file;
         
     }
 }
