@@ -33,9 +33,18 @@ public class Runner {
             {
                 try{
                    new Server(InetAddress.getByName(args[1]));
-                }catch(Exception e)
+                }catch(UnknownHostException e)
                 {
-                    System.err.println(e.toString());
+                    System.err.println("Unable to bind to address!");
+                    try {
+                        new Server(InetAddress.getLocalHost());
+                    } catch (UnknownHostException ex) {
+                        System.err.println("Unable to bind to localhost!");
+                        System.exit(0);
+                    }
+                }catch(ArrayIndexOutOfBoundsException e)
+                {
+                    System.err.println("No address supplied\nUsing Localhost");
                     try {
                         new Server(InetAddress.getLocalHost());
                     } catch (UnknownHostException ex) {
@@ -57,10 +66,20 @@ public class Runner {
                    new Client(InetAddress.getByName(args[1]),Integer.parseInt(args[2]));
                 }catch(UnknownHostException e)
                 {
-                    System.err.println(e.toString());
+                    System.err.println("Unable to find specifed address!");
                     try {
-                        new Server(InetAddress.getLocalHost());
+                        new Client(InetAddress.getLocalHost(),80);
                     } catch (Exception ex) {
+                        System.err.println("Unable to bind to localhost!");
+                        System.exit(0);
+                    }
+                }
+                catch(ArrayIndexOutOfBoundsException e)
+                {
+                    System.err.println("No address/port supplied\nUsing Default Values");
+                    try {
+                        new Client(InetAddress.getLocalHost(),80);
+                    } catch (UnknownHostException ex) {
                         System.err.println("Unable to bind to localhost!");
                         System.exit(0);
                     }
