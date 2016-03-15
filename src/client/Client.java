@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author tba_m
+ * @author Tyler Atiburcio
  */
 public class Client {
     
@@ -27,14 +27,10 @@ public class Client {
         PrintWriter out = null;
         BufferedReader in = null;
         
-//        BufferedReader infromusr = null;
-        
         try{
             socks = new Socket(this.address,this.port);
             out = new PrintWriter(socks.getOutputStream(),true);
             in = new BufferedReader(new InputStreamReader(socks.getInputStream()));
-            
-//            infromusr = new BufferedReader(new InputStreamReader(System.in));
             
         }catch(IOException e)
         {
@@ -45,13 +41,6 @@ public class Client {
         System.out.println("Connected @ " + socks.getInetAddress() +":"+ socks.getPort() );
         
         try{
-//            while(true)
-//            {
-////                out.writeBytes(infromusr.readLine());
-//                
-//                out.println("Aloha");
-//                System.out.println(in.readLine());
-//            }
             
             boolean isDone = false;
             String data = null;
@@ -77,18 +66,12 @@ public class Client {
                     isDone = true;
                 }
             }
-            
-            
+
         }catch(Exception e)
         {
             System.err.println("Socket Closed!");
             System.exit(1);
         }
-        finally{
-            
-        }
-        
-        
     }
     
     private static int[] readFile(String fileName)

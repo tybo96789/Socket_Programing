@@ -76,7 +76,7 @@ public class Server {
                 {
                     dataBytes.add(fileData);
                 }
-                System.out.println("Data recieved:" + dataBytes.get(0));
+                System.out.println("Data recieved:" + dataBytes.get(0) + " Bytes");
                 out.println("Your file named \""+writeFile(dataBytes)+"\" with the size "+ dataBytes.get(0)+" bytes has been uploaded correctly");
                 if((data = in.readLine()).equals("-1")) isDone = true;
             }
