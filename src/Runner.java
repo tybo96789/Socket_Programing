@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 
 /**
  *
- * @author tba_m
+ * @author Tyler Atiburcio
  */
 public class Runner {
     
@@ -19,10 +19,6 @@ public class Runner {
                 System.err.println("Unable to get Localhost");
                 System.exit(1);
             }
-            finally
-            {
-                System.exit(0);
-            }
         }
         switch(args[0].trim().toLowerCase())
         {
@@ -32,10 +28,10 @@ public class Runner {
             case "-s":
             {
                 try{
-                   new Server(InetAddress.getByName(args[1]));
+                   new Server(InetAddress.getByName(args[1]),Integer.parseInt(args[2]));
                 }catch(UnknownHostException e)
                 {
-                    System.err.println("Unable to bind to address!");
+                    System.err.println("Unable to bind to address!\nUsing Default Values");
                     try {
                         new Server(InetAddress.getLocalHost());
                     } catch (UnknownHostException ex) {
@@ -44,16 +40,27 @@ public class Runner {
                     }
                 }catch(ArrayIndexOutOfBoundsException e)
                 {
-                    System.err.println("No address supplied\nUsing Localhost");
+                    
                     try {
-                        new Server(InetAddress.getLocalHost());
+                        new Server(InetAddress.getByName(args[1]));
+                    } catch (ArrayIndexOutOfBoundsException ex) {
+                        try{
+                            System.err.println("No Address supplied!\nUsing Default Values");
+                            new Server(InetAddress.getLocalHost());
+                        }catch(UnknownHostException e1)
+                        {
+                            System.err.println("Unable to bind to localhost!");
+                            System.exit(0);
+                        }
                     } catch (UnknownHostException ex) {
-                        System.err.println("Unable to bind to localhost!");
-                        System.exit(0);
+                        try {
+                            new Server(InetAddress.getLocalHost());
+                        } catch (UnknownHostException e2) {
+                            System.err.println("Unable to bind to localhost!");
+                            System.exit(0);
+                    }
                     }
                 }
-                    
-
                 break;
             }
             case "client":
@@ -61,7 +68,6 @@ public class Runner {
             case "-client":
             case "-c":
             {
-
                 try{
                    new Client(InetAddress.getByName(args[1]),Integer.parseInt(args[2]));
                 }catch(UnknownHostException e)
@@ -84,13 +90,13 @@ public class Runner {
                         System.exit(0);
                     }
                 }
-                    
-
                 break;
             }
             default:
             {
-                System.err.println("Unknown Command. Terminating");
+                System.out.println("Usage: [Client/Server] [Options]");
+                System.out.println("Server: \"-s\" [Binding Address] [Binding Port]");
+                System.out.println("Client: \"-c\" [Server Address] [Server Port]");
                 System.exit(0);
             }
         }

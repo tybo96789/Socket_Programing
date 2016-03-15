@@ -1,7 +1,6 @@
 package server;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,25 +9,29 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.Random;
 
 /**
  *
- * @author tba_m
+ * @author Tyler Atiburcio
  */
 public class Server {
-    final static int PORT_NUM = 80;
-    final InetAddress inetAddress;
-    ServerSocket socks;
+    private final static int DEFAULT_PORT_NUM = 80;
+    private InetAddress inetAddress;
+    private ServerSocket socks;
+    
+    
+    public Server(InetAddress inetAddress)
+    {
+        new Server(inetAddress,DEFAULT_PORT_NUM);
+    }
 
-    public Server(InetAddress inetAddress) {
+    public Server(InetAddress inetAddress, int port) {
         this.inetAddress = inetAddress;
         try {
-            this.socks = new ServerSocket(PORT_NUM);
+            this.socks = new ServerSocket(port,0,this.inetAddress);
         } catch (IOException ex) {
-            System.err.println("Unable to bind to port: " + PORT_NUM);
+            System.err.println("Unable to bind to port: " + port);
             System.exit(1);
         }
         
@@ -58,13 +61,8 @@ public class Server {
         
         String data = null;
         boolean isDone = false;
-        File file = null;
         try{
-//            while(true)
-//            {
-//                System.out.println(in.readLine());
-//                out.println("Hello");
-//            }
+
         while(true && !isDone)
         {
             data = in.readLine();
